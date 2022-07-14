@@ -8,9 +8,14 @@
 import SwiftUI
 
 struct ContentView: View {
+    @AppStorage("registerShown") var shown: Bool = false
     var body: some View {
-        Text("Hello, world!")
-            .padding()
+        if(shown){
+            FirstTime()
+        }
+        else{
+            HomeScreen()
+        }
     }
 }
 

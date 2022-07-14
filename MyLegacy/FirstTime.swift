@@ -8,51 +8,58 @@
 import SwiftUI
 
 struct FirstTime: View {
+    @State private var showRegister = false
     var body: some View {
-        ZStack{
-            Color.cyan
-                .ignoresSafeArea()
-            VStack{
-                Text("Hi.")
-                    .foregroundColor(.white)
-                    .fontWeight(.heavy)
-                    .font(.system(size: 60))
-                Text("Welcome to your personal gym tracker")
-                    .foregroundColor(.white)
-                
-                ZStack{
-                    Circle()
-                        .scale(1.7)
-                        .foregroundColor(.white.opacity(0.15))
-                    Circle()
-                        .scale(0.8)
+        NavigationView{
+            ZStack{
+                Color.cyan
+                    .ignoresSafeArea()
+                VStack{
+                    Text("Hi.")
                         .foregroundColor(.white)
-                    Image("crucifix")
+                        .fontWeight(.heavy)
+                        .font(.system(size: 60))
+                    Text("Welcome to your personal gym tracker")
+                        .foregroundColor(.white)
                     
-                }
-                ZStack{
-                    Capsule()
-                        .foregroundColor(.cyan)
-                    Capsule()
-                        .foregroundColor(.white.opacity(0.3))
-                    Button(action: start){
-                        Text("Let's get started")
-                            .fontWeight(.heavy)
+                    ZStack{
+                        Circle()
+                            .scale(1.7)
+                            .foregroundColor(.white.opacity(0.15))
+                        Circle()
+                            .scale(0.8)
                             .foregroundColor(.white)
-                            .font(.system(size: 30))
+                        Image("crucifix")
+                        
                     }
+                    NavigationLink(destination: RegisterScreen()){
+                        ZStack{
+                            Capsule()
+                                .foregroundColor(.cyan)
+                            Capsule()
+                                .foregroundColor(.white.opacity(0.3))
+                            Text("Let's Begin")
+                                .foregroundColor(.white)
+                                .fontWeight(.heavy)
+                                .font(.system(size:20))
+                        }
+                    }
+                    .frame(height: 80)
+                    .offset(y:-40)
+                    
+                    Spacer()
                 }
-                .frame(height: 80)
-                .offset(y:-40)
+                
             }
-            
         }
     }
 }
 
+
 struct FirstTime_Previews: PreviewProvider {
     static var previews: some View {
         FirstTime()
+        //RegisterView()
     }
 }
 
