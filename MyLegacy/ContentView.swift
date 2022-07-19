@@ -11,10 +11,10 @@ struct ContentView: View {
     @AppStorage("registerShown") var shown: Bool = false
     var body: some View {
         if(shown){
-            FirstTime()
+            HomeScreen()
         }
         else{
-            HomeScreen()
+            FirstTime()
         }
     }
 }
