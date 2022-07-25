@@ -19,6 +19,8 @@
 		1B0734B228793A3E008C7F97 /* FirstTime.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B0734B128793A3E008C7F97 /* FirstTime.swift */; };
 		1B0734B4287D2CE7008C7F97 /* RegisterScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B0734B3287D2CE7008C7F97 /* RegisterScreen.swift */; };
 		1B0734B6287F8A06008C7F97 /* HomeScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B0734B5287F8A06008C7F97 /* HomeScreen.swift */; };
+		1B41E029288E51BD000BCCEB /* WorkoutCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B41E028288E51BD000BCCEB /* WorkoutCard.swift */; };
+		1B41E02B288E6429000BCCEB /* WorkoutModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B41E02A288E6429000BCCEB /* WorkoutModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -54,6 +56,8 @@
 		1B0734B128793A3E008C7F97 /* FirstTime.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstTime.swift; sourceTree = "<group>"; };
 		1B0734B3287D2CE7008C7F97 /* RegisterScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterScreen.swift; sourceTree = "<group>"; };
 		1B0734B5287F8A06008C7F97 /* HomeScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeScreen.swift; sourceTree = "<group>"; };
+		1B41E028288E51BD000BCCEB /* WorkoutCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutCard.swift; sourceTree = "<group>"; };
+		1B41E02A288E6429000BCCEB /* WorkoutModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -113,6 +117,8 @@
 				1B0734AF28790C32008C7F97 /* zyzz.png */,
 				1B07348928790548008C7F97 /* Preview Content */,
 				1B0734B3287D2CE7008C7F97 /* RegisterScreen.swift */,
+				1B41E028288E51BD000BCCEB /* WorkoutCard.swift */,
+				1B41E02A288E6429000BCCEB /* WorkoutModel.swift */,
 			);
 			path = MyLegacy;
 			sourceTree = "<group>";
@@ -274,7 +280,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				1B0734B4287D2CE7008C7F97 /* RegisterScreen.swift in Sources */,
+				1B41E02B288E6429000BCCEB /* WorkoutModel.swift in Sources */,
 				1B07348628790547008C7F97 /* ContentView.swift in Sources */,
+				1B41E029288E51BD000BCCEB /* WorkoutCard.swift in Sources */,
 				1B0734B6287F8A06008C7F97 /* HomeScreen.swift in Sources */,
 				1B0734B228793A3E008C7F97 /* FirstTime.swift in Sources */,
 				1B0734AE287905C9008C7F97 /* SplashScreen.swift in Sources */,

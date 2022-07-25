@@ -51,6 +51,18 @@ struct Home: View{
     }
 }
 
+struct Workouts: View{
+    var body: some View{
+        NavigationView{
+            ZStack{
+                Color(red: 217/255, green: 255/255, blue: 245/255)
+                    .ignoresSafeArea()
+            }
+            .navigationTitle("Workouts")
+        }
+    }
+}
+
 struct HomeScreen: View {
     var body: some View {
         TabView{
@@ -59,10 +71,10 @@ struct HomeScreen: View {
                     Image(systemName: "house")
                     Text("Home")
                 }
-            Text("Workouts")
+            Workouts()
                 .tabItem {
                     Image(systemName: "figure.walk")
-                    Text("Workout")
+                    Text("Workouts")
                 }
             Text("Progress")
                 .tabItem {
