@@ -57,6 +57,9 @@ struct Workouts: View{
             ZStack{
                 Color(red: 217/255, green: 255/255, blue: 245/255)
                     .ignoresSafeArea()
+                ScrollView{
+                    WorkoutList(workouts: WorkoutDay.all)
+                }
             }
             .navigationTitle("Workouts")
         }
