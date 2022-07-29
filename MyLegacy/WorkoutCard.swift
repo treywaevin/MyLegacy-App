@@ -39,7 +39,6 @@ struct WorkoutCard: View {
         .background(LinearGradient(gradient: Gradient(colors: [russianGreen, magicMint]), startPoint: .top, endPoint: .bottom))
         .clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
         .shadow(color: Color.black.opacity(0.3), radius: 15, x:0, y:10)
-        
     }
 }
 
@@ -61,7 +60,7 @@ struct AddCard: View{
 
 struct WorkoutCard_Previews: PreviewProvider {
     static var previews: some View {
-        //WorkoutCard(workout: test_workout)
-        AddCard()
+        WorkoutCard(workout: test_workout)
+        //AddCard()
     }
 }

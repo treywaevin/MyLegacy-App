@@ -22,6 +22,7 @@ struct Exercise: Identifiable{
 
 struct WorkoutDay: Identifiable{
     let id = UUID()
+    
     var name: String
     var count: Int = 0
     var exercises: [Exercise] = []
@@ -43,6 +44,10 @@ extension WorkoutDay{
     // Filled in for testing purposes
     static var all: [WorkoutDay] = [
         WorkoutDay(name: "Push", exercises: [Exercise(name: "Dumbell Press", sets:3)
+                                             ,Exercise(name: "Incline Press", sets: 3)
+                                             ,Exercise(name:"Lateral Raise", sets:3)
+                                             ,Exercise(name:"Dips",sets:3)
+                                            ,Exercise(name: "Dumbell Press", sets:3)
                                              ,Exercise(name: "Incline Press", sets: 3)
                                              ,Exercise(name:"Lateral Raise", sets:3)
                                              ,Exercise(name:"Dips",sets:3)

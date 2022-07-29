@@ -52,16 +52,29 @@ struct Home: View{
 }
 
 struct Workouts: View{
+    @State var show = false
     var body: some View{
         NavigationView{
             ZStack{
                 Color(red: 217/255, green: 255/255, blue: 245/255)
                     .ignoresSafeArea()
-                ScrollView{
-                    WorkoutList(workouts: WorkoutDay.all)
+                VStack{
+                    HStack{
+                        Text("Workout").font(.largeTitle).bold()
+                    }
+                        ScrollView{
+                            WorkoutList(workouts: WorkoutDay.all, show: $show)
+                        }
+                }
+                .frame(maxWidth:.infinity, maxHeight:.infinity, alignment:.topLeading)
+                if show{
+                    Color.black.opacity(0.3).ignoresSafeArea()
+                    WorkoutView(workoutday: WorkoutDay.all[0], show: $show)
+                        .transition(.move(edge: .bottom))
+                        .zIndex(1)
+                        .navigationTitle("")
                 }
             }
-            .navigationTitle("Workouts")
         }
     }
 }
@@ -84,6 +97,9 @@ struct HomeScreen: View {
                     Image(systemName: "heart.text.square")
                     Text("Progress")
                 }
+        }
+        .onAppear(){
+            UITabBar.appearance().backgroundColor = .white
         }
     }
 }
