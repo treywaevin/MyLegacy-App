@@ -53,6 +53,7 @@ struct Home: View{
 
 struct Workouts: View{
     @State var show = false
+    @State var workoutIndex: Int = 0
     var body: some View{
         NavigationView{
             ZStack{
@@ -63,13 +64,13 @@ struct Workouts: View{
                         Text("Workout").font(.largeTitle).bold()
                     }
                         ScrollView{
-                            WorkoutList(workouts: WorkoutDay.all, show: $show)
+                            WorkoutList(workouts: WorkoutDay.all, show: $show, outputWorkout: $workoutIndex)
                         }
                 }
                 .frame(maxWidth:.infinity, maxHeight:.infinity, alignment:.topLeading)
                 if show{
                     Color.black.opacity(0.3).ignoresSafeArea()
-                    WorkoutView(workoutday: WorkoutDay.all[0], show: $show)
+                    WorkoutView(workoutday: WorkoutDay.all[workoutIndex], show: $show)
                         .transition(.move(edge: .bottom))
                         .zIndex(1)
                         .navigationTitle("")

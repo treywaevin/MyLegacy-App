@@ -11,13 +11,15 @@ struct WorkoutList: View {
     var workouts: [WorkoutDay]
     
     @Binding var show: Bool
+    @Binding var outputWorkout: Int
     var body: some View {
         VStack{
             LazyVGrid(columns: [GridItem(.adaptive(minimum: 160), spacing:15)], spacing: 15){
-                ForEach(workouts){ workout in
+                ForEach(Array(workouts.enumerated()), id:\.offset) { index, workout in
                     WorkoutCard(workout: workout)
                         .onTapGesture{
-                            print("\(workout.name)")
+                            print("\(workout.name), \(index)")
+                            outputWorkout = index
                             withAnimation(.easeIn){
                                 show.toggle()
                             }
@@ -33,6 +35,6 @@ struct WorkoutList: View {
 
 struct WorkoutList_Previews: PreviewProvider {
     static var previews: some View {
-        WorkoutList(workouts: WorkoutDay.all, show: .constant(true))
+        WorkoutList(workouts: WorkoutDay.all, show: .constant(true), outputWorkout: .constant(0))
     }
 }

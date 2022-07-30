@@ -44,6 +44,7 @@ struct WorkoutView: View {
 struct WorkoutBottomSheet: View{
     var workout: WorkoutDay
     @Binding var show: Bool
+    @State var exerciseCount: Int = 0
     var body: some View{
         VStack{
             // Swipe Bar
@@ -79,39 +80,57 @@ struct WorkoutBottomSheet: View{
             .padding(.horizontal, 20)
             // List number of exercises
             HStack{
-                Text("\(workout.count) exercises listed")
+                Text("\(exerciseCount) exercises listed")
                 Spacer()
             }
             .padding(.horizontal, 20)
             .padding(.bottom, 60)
             ScrollView{
-            LazyVStack{
-                ForEach(workout.exercises){ exercise in
-                    ListRow(exercise: exercise)
+                LazyVStack{
+                    ForEach(workout.exercises){ exercise in
+                        ListRow(workout: workout, exercise: exercise, count: $exerciseCount)
+                    }
+                }
+                .frame(maxWidth:.infinity, maxHeight:.infinity, alignment:.topLeading)
+                HStack{
+                    Button {} label: {
+                        Label("Save Workout", systemImage: "pencil")
+                            .font(.body.bold())
+                            .foregroundColor(.white)
+                            .padding(.horizontal, 8)
+                            .padding(8)
+                        }
+                    .background(Color(hex: 0x6B8F71))
+                    .cornerRadius(30)
+                    Button(action:{
+                        WorkoutDay.all.remove(at: 0)
+                        show.toggle()
+                    }, label: {
+                        Label("Delete Workout", systemImage:"xmark")
+                            .font(.body.bold())
+                            .foregroundColor(.white)
+                            .padding(.horizontal,8)
+                            .padding(8)
+                        })
+                    .background(.red)
+                    .cornerRadius(30)
+                    }
                 }
             }
-            .frame(maxWidth:.infinity, maxHeight:.infinity, alignment:.topLeading)
-            Button {} label: {
-                Label("Save Workout", systemImage: "pencil")
-                    .font(.body.bold())
-                    .foregroundColor(.white)
-                    .padding(.horizontal, 8)
-                    .padding(8)
-            }
-            .background(Color(hex: 0x6B8F71))
-            .cornerRadius(30)
-            }
-            }
             .padding(.bottom,100)
+            .onAppear(){
+                exerciseCount = workout.exercises.count
+            }
     }
-
 }
 
 struct ListRow: View{
+    var workout: WorkoutDay
     var exercise: Exercise
     
     @AppStorage("measureIndex") var measureIndex = 0
     @State private var sets = 1
+    @Binding var count: Int
     var measure = ["lbs","kg"]
     
     var body: some View{
@@ -128,12 +147,19 @@ struct ListRow: View{
                 HStack{
                     Text("\(sets) sets").font(.system(size: 15, weight: .bold))
                     Stepper("", value: $sets, in: 1...10, step: 1)
-                    Button {} label: {
+                    // Delete Workout
+                    Button(action: {
+                        print("\(workout.exercises)")
+                        workout.exercises.remove(at: 0)
+                        count = workout.exercises.count
+                        print("deleted")
+                        print("\(workout.exercises)")
+                    } ,label: {
                         Label("", systemImage: "trash")
                             .foregroundColor(.white)
                             .font(.system(size: 15))
                             .padding(.horizontal, 8)
-                    }
+                    })
                     .background(.red)
                     .cornerRadius(30)
                 }
@@ -156,3 +182,4 @@ struct WorkoutView_Previews: PreviewProvider {
         //ListRow(exercise: test)
     }
 }
+

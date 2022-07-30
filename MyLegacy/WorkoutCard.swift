@@ -25,7 +25,7 @@ struct WorkoutCard: View {
                 .foregroundColor(.white)
             Spacer()
                 .frame(height: 40)
-            Text("\(workout.count) exercises")
+            Text("\(workout.exercises.count) exercises")
             Spacer()
                 .frame(height: 5)
             HStack{

@@ -20,12 +20,18 @@ struct Exercise: Identifiable{
     var weight: [Int] = []
 }
 
-struct WorkoutDay: Identifiable{
+class WorkoutDay: Identifiable{
     let id = UUID()
-    
     var name: String
-    var count: Int = 0
     var exercises: [Exercise] = []
+    init(name: String, exercises: [Exercise] = []){
+        self.name = name
+        self.exercises = exercises
+    }
+    
+    func deleteExercise(index: IndexSet){
+        self.exercises.remove(atOffsets: index)
+    }
 }
 
 extension Color {
