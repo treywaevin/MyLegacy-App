@@ -9,7 +9,7 @@ import SwiftUI
 
 struct Home: View{
     @AppStorage("name") var name = "Aevin"
-    @AppStorage("current") var current = "Rest"
+    @AppStorage("current") var current = 0
     @State var dateString = ""
     
     var body: some View{
@@ -27,7 +27,7 @@ struct Home: View{
                             Text("\(dateString)")
                                 .foregroundColor(.white)
                                 .font(.system(size: 30, weight: .bold, design:.rounded))
-                            Text("Today is \(current)")
+                            Text("Today you are hitting \(WorkoutDay.all[current].name)")
                                 .foregroundColor(.white)
                         }
                     }
@@ -54,6 +54,7 @@ struct Home: View{
 struct Workouts: View{
     @State var show = false
     @State var workoutIndex: Int = 0
+
     var body: some View{
         NavigationView{
             ZStack{
@@ -78,6 +79,8 @@ struct Workouts: View{
             }
         }
     }
+    
+    
 }
 
 struct HomeScreen: View {

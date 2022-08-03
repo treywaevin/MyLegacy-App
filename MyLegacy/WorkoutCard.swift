@@ -25,8 +25,8 @@ struct WorkoutCard: View {
                 .foregroundColor(.white)
             Spacer()
                 .frame(height: 40)
-            Text("\(workout.exercises.count) exercises")
-            Spacer()
+            //Text("\(workout.exercises.count) exercises")
+           // Spacer()
                 .frame(height: 5)
             HStack{
                 Spacer()
@@ -39,6 +39,7 @@ struct WorkoutCard: View {
         .background(LinearGradient(gradient: Gradient(colors: [russianGreen, magicMint]), startPoint: .top, endPoint: .bottom))
         .clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
         .shadow(color: Color.black.opacity(0.3), radius: 15, x:0, y:10)
+        .overlay(RoundedRectangle(cornerRadius: 10).stroke(.red,lineWidth: 4))
     }
 }
 

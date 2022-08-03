@@ -11,6 +11,7 @@ struct WorkoutView: View {
     @State var translation: CGSize = .zero
     var workoutday: WorkoutDay
     @Binding var show: Bool
+    @State var refreshList: Bool = true
     
     var body: some View {
         let magicMint = Color(red: 185/255, green: 245/255, blue:216/255)
@@ -18,7 +19,7 @@ struct WorkoutView: View {
         ZStack{
             //ScrollView{
             VStack{
-                WorkoutBottomSheet(workout: workoutday, show: $show)
+                WorkoutBottomSheet(workout: workoutday, show: $show, refreshList: $refreshList)
             }
             //}
             .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -45,6 +46,8 @@ struct WorkoutBottomSheet: View{
     var workout: WorkoutDay
     @Binding var show: Bool
     @State var exerciseCount: Int = 0
+    @State var new_exercise: String = "Untitled"
+    @Binding var refreshList: Bool
     var body: some View{
         VStack{
             // Swipe Bar
@@ -54,13 +57,15 @@ struct WorkoutBottomSheet: View{
             // Show workout day and add button
             HStack(spacing: 16){
                 Text("\(workout.name)").font(.largeTitle).bold()
-                Button {} label: {
+                Button (action:{
+                    addAlertView()
+                } ,label: {
                     Label("Add", systemImage: "plus.circle.fill")
                         .font(.body.bold())
                         .foregroundColor(.white)
                         .padding(8)
                         .padding(.horizontal, 8)
-                }
+                })
                 .background(Color(hex: 0x6B8F71))
                 .cornerRadius(30)
                 Spacer()
@@ -93,8 +98,8 @@ struct WorkoutBottomSheet: View{
                 }
                 .frame(maxWidth:.infinity, maxHeight:.infinity, alignment:.topLeading)
                 HStack{
-                    Button {} label: {
-                        Label("Save Workout", systemImage: "pencil")
+                    Button{} label: {
+                        Label("Set Current", systemImage: "calendar.circle")
                             .font(.body.bold())
                             .foregroundColor(.white)
                             .padding(.horizontal, 8)
@@ -121,6 +126,41 @@ struct WorkoutBottomSheet: View{
             .onAppear(){
                 exerciseCount = workout.exercises.count
             }
+    }
+    
+    func addAlertView(){
+        let alert = UIAlertController(title:"Add Exercise", message: "Enter new exercise", preferredStyle: .alert)
+        
+        alert.addTextField{field in
+            field.placeholder = "Exercise"
+        }
+        // Alert buttons
+        alert.addAction(UIAlertAction(title:"Cancel",style:.cancel,handler: nil))
+        alert.addAction(UIAlertAction(title:"Add",style: .default,handler:{ _ in
+            // Set textfield to variable
+            new_exercise = alert.textFields![0].text!
+            
+            // Create new exercise
+            workout.exercises.append(Exercise(name: new_exercise))
+            
+            exerciseCount = workout.exercises.count
+            
+            refreshList.toggle()
+        }))
+        
+        rootController().present(alert,animated:true, completion:nil)
+        
+        func rootController()->UIViewController{
+            guard let screen = UIApplication.shared.connectedScenes.first as? UIWindowScene else{
+                return .init()
+            }
+            
+            guard let root = screen.windows.first?.rootViewController else{
+                return .init()
+            }
+            
+            return root
+        }
     }
 }
 
@@ -150,7 +190,7 @@ struct ListRow: View{
                     // Delete Workout
                     Button(action: {
                         print("\(workout.exercises)")
-                        workout.exercises.remove(at: 0)
+                        workout.exercises = workout.exercises.filter{$0.id != exercise.id}
                         count = workout.exercises.count
                         print("deleted")
                         print("\(workout.exercises)")

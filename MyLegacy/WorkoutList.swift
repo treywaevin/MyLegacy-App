@@ -12,6 +12,7 @@ struct WorkoutList: View {
     
     @Binding var show: Bool
     @Binding var outputWorkout: Int
+    @State var new_day = "Untitled"
     var body: some View {
         VStack{
             LazyVGrid(columns: [GridItem(.adaptive(minimum: 160), spacing:15)], spacing: 15){
@@ -26,10 +27,47 @@ struct WorkoutList: View {
                         }
                 }
                 AddCard()
+                    .onTapGesture{
+                        addAlertView()
+                    }
             }
             .padding(.top)
         }
         .padding(.horizontal)
+    }
+    
+    func addAlertView(){
+        let alert = UIAlertController(title:"Add Day", message: "Enter new workout day", preferredStyle: .alert)
+        
+        alert.addTextField{field in
+            field.placeholder = "Workout Day"
+        }
+        // Alert buttons
+        alert.addAction(UIAlertAction(title:"Cancel",style:.cancel,handler: nil))
+        alert.addAction(UIAlertAction(title:"Add",style: .default,handler:{ _ in
+            // Set textfield to variable
+            new_day = alert.textFields![0].text!
+            
+            WorkoutDay.all.append(WorkoutDay(name: new_day))
+            outputWorkout = WorkoutDay.all.count - 1
+            withAnimation(.easeIn){
+                show.toggle()
+            }
+        }))
+        
+        rootController().present(alert,animated:true, completion:nil)
+        
+        func rootController()->UIViewController{
+            guard let screen = UIApplication.shared.connectedScenes.first as? UIWindowScene else{
+                return .init()
+            }
+            
+            guard let root = screen.windows.first?.rootViewController else{
+                return .init()
+            }
+            
+            return root
+        }
     }
 }
 
