@@ -15,7 +15,7 @@ struct RegisterScreen: View{
     @State private var weight_inputted = 0
     @AppStorage("measureIndex") var measureIndex = 0
 
-    var measure = ["Imperial (lbs)", "Metric (kgs)"]
+    private var measure = ["Imperial (lbs)", "Metric (kgs)"]
 
     var body: some View{
         if(shown){

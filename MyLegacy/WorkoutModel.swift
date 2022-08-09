@@ -8,14 +8,18 @@
 import Foundation
 import SwiftUI
 
-struct Exercise: Identifiable{
+class Exercise: Identifiable{
     let id = UUID()
-    
     var name: String
+    var sets: Int
+    
+    init(name: String, sets: Int = 1){
+        self.name = name
+        self.sets = sets
+    }
+    
     var pr: Int = 0
     var pr_reps: Int = 0
-    var sets: Int = 1
-    
     var reps: [Int] = []
     var weight: [Int] = []
 }
@@ -50,10 +54,6 @@ extension WorkoutDay{
     // Filled in for testing purposes
     static var all: [WorkoutDay] = [
         WorkoutDay(name: "Push", exercises: [Exercise(name: "Dumbell Press", sets:3)
-                                             ,Exercise(name: "Incline Press", sets: 3)
-                                             ,Exercise(name:"Lateral Raise", sets:3)
-                                             ,Exercise(name:"Dips",sets:3)
-                                            ,Exercise(name: "Dumbell Press", sets:3)
                                              ,Exercise(name: "Incline Press", sets: 3)
                                              ,Exercise(name:"Lateral Raise", sets:3)
                                              ,Exercise(name:"Dips",sets:3)

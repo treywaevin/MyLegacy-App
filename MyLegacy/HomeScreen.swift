@@ -17,7 +17,7 @@ struct Home: View{
             ZStack{
                 Color(red: 217/255, green: 255/255, blue: 245/255)
                     .ignoresSafeArea()
-                VStack(spacing: 60){
+                VStack(spacing: 40){
                     // Current Workout Day
                     ZStack{
                         RoundedRectangle(cornerRadius: 20)
@@ -31,14 +31,32 @@ struct Home: View{
                                 .foregroundColor(.white)
                         }
                     }
-                    
                     // Exercise List
-                    ZStack{
+                    /*ZStack{
                         RoundedRectangle(cornerRadius: 10)
                             .fill(.white)
                         LazyVStack{
-                            Text("Test")
-                            Text("Test")
+                            ScrollView{
+                            ForEach(WorkoutDay.all[current].exercises){ exercise in
+                                LogRow(exercise: exercise)
+                            }
+                            }
+                        }
+                    }*/
+                    ZStack{
+                        Color.white
+                        VStack{
+                            List{
+                                ForEach(WorkoutDay.all[current].exercises){ exercise in
+                                    LogRow(exercise: exercise)
+                                }
+                            }
+                            .listStyle(.plain)
+                            //.frame(height:330)
+                            
+                            Button{}label:{
+                                Text("Log Workout")
+                            }
                         }
                     }
                 }
@@ -96,7 +114,7 @@ struct HomeScreen: View {
                     Image(systemName: "figure.walk")
                     Text("Workouts")
                 }
-            Text("Progress")
+            Text("WIP - Coming Soon")
                 .tabItem {
                     Image(systemName: "heart.text.square")
                     Text("Progress")
