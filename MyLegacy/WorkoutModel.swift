@@ -8,8 +8,8 @@
 import Foundation
 import SwiftUI
 
-class Exercise: Identifiable{
-    let id = UUID()
+class Exercise: Codable & Identifiable{
+    var id = UUID()
     var name: String
     var sets: Int
     
@@ -24,8 +24,8 @@ class Exercise: Identifiable{
     var weight: [Int] = []
 }
 
-class WorkoutDay: Identifiable{
-    let id = UUID()
+class WorkoutDay: Codable & Identifiable{
+    var id = UUID()
     var name: String
     var exercises: [Exercise] = []
     init(name: String, exercises: [Exercise] = []){
@@ -50,7 +50,10 @@ extension Color {
     }
 }
 
+
+
 extension WorkoutDay{
+    
     // Filled in for testing purposes
     static var all: [WorkoutDay] = [
         WorkoutDay(name: "Push", exercises: [Exercise(name: "Dumbell Press", sets:3)

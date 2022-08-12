@@ -48,6 +48,10 @@ struct WorkoutBottomSheet: View{
     @State var exerciseCount: Int = 0
     @State var new_exercise: String = "Untitled"
     @Binding var refreshList: Bool
+    
+    // Data stored in app
+    @AppStorage("workouts") private var workouts: Data = Data()
+    
     var body: some View{
         VStack{
             // Swipe Bar
@@ -108,7 +112,12 @@ struct WorkoutBottomSheet: View{
                     .background(Color(hex: 0x6B8F71))
                     .cornerRadius(30)
                     Button(action:{
-                        WorkoutDay.all.remove(at: 0)
+                        WorkoutDay.all = WorkoutDay.all.filter{$0.id != workout.id}
+                        
+                        // Save data into app memory
+                        guard let workouts = try?JSONEncoder().encode(WorkoutDay.all) else{return}
+                        self.workouts = workouts
+                        
                         show.toggle()
                     }, label: {
                         Label("Delete Workout", systemImage:"xmark")
@@ -144,6 +153,11 @@ struct WorkoutBottomSheet: View{
             workout.exercises.append(Exercise(name: new_exercise))
             
             exerciseCount = workout.exercises.count
+            
+            // Save data into app memory
+            guard let workouts = try?JSONEncoder().encode(WorkoutDay.all) else{return}
+            
+            self.workouts = workouts
             
             refreshList.toggle()
         }))
@@ -189,11 +203,8 @@ struct ListRow: View{
                     Stepper("", value: $sets, in: 1...10, step: 1)
                     // Delete Workout
                     Button(action: {
-                        print("\(workout.exercises)")
                         workout.exercises = workout.exercises.filter{$0.id != exercise.id}
                         count = workout.exercises.count
-                        print("deleted")
-                        print("\(workout.exercises)")
                     } ,label: {
                         Label("", systemImage: "trash")
                             .foregroundColor(.white)

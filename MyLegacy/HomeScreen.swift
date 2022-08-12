@@ -8,9 +8,14 @@
 import SwiftUI
 
 struct Home: View{
-    @AppStorage("name") var name = "Aevin"
+    @AppStorage("name") var name = "User"
     @AppStorage("current") var current = 0
     @State var dateString = ""
+    @State var show = false
+    @State var showExercise = WorkoutDay.all[0].exercises[0]
+    
+    //Loaad Data
+    @AppStorage("workouts") private var workoutsData: Data = Data()
     
     var body: some View{
         NavigationView{
@@ -31,24 +36,18 @@ struct Home: View{
                                 .foregroundColor(.white)
                         }
                     }
-                    // Exercise List
-                    /*ZStack{
-                        RoundedRectangle(cornerRadius: 10)
-                            .fill(.white)
-                        LazyVStack{
-                            ScrollView{
-                            ForEach(WorkoutDay.all[current].exercises){ exercise in
-                                LogRow(exercise: exercise)
-                            }
-                            }
-                        }
-                    }*/
                     ZStack{
                         Color.white
                         VStack{
                             List{
                                 ForEach(WorkoutDay.all[current].exercises){ exercise in
                                     LogRow(exercise: exercise)
+                                        .onTapGesture{
+                                            showExercise = exercise
+                                            withAnimation(.easeIn){
+                                                show.toggle()
+                                            }
+                                        }
                                 }
                             }
                             .listStyle(.plain)
@@ -61,6 +60,11 @@ struct Home: View{
                     }
                 }
                     .navigationTitle("Hi \(name)!")
+                if show{
+                    Color.black.opacity(0.3).ignoresSafeArea()
+                    LogVIew(exercise: showExercise, show: $show)
+                        .transition(.move(edge: .bottom))
+                }
             }
         }
         .onAppear{
@@ -72,7 +76,11 @@ struct Home: View{
 struct Workouts: View{
     @State var show = false
     @State var workoutIndex: Int = 0
-
+    @State var allWorkouts: [WorkoutDay] = []
+    
+    // Data stored in apps
+    @AppStorage("workouts") private var workoutsData: Data = Data()
+    
     var body: some View{
         NavigationView{
             ZStack{
@@ -83,7 +91,7 @@ struct Workouts: View{
                         Text("Workout").font(.largeTitle).bold()
                     }
                         ScrollView{
-                            WorkoutList(workouts: WorkoutDay.all, show: $show, outputWorkout: $workoutIndex)
+                            WorkoutList(workouts: allWorkouts, show: $show, outputWorkout: $workoutIndex)
                         }
                 }
                 .frame(maxWidth:.infinity, maxHeight:.infinity, alignment:.topLeading)
@@ -93,8 +101,26 @@ struct Workouts: View{
                         .transition(.move(edge: .bottom))
                         .zIndex(1)
                         .navigationTitle("")
+                        .onDisappear(){
+                            // Update List
+                            guard let workouts = try?JSONDecoder().decode([WorkoutDay].self, from: workoutsData) else {return}
+                            allWorkouts = workouts
+                            WorkoutDay.all = workouts
+                            print("Workouts: \(WorkoutDay.all)")
+
+                        }
+                    
                 }
             }
+        }
+        .onAppear(){
+            // Load Data stored from app memory into variable
+            print("Loading Workout List")
+            guard let workouts = try?JSONDecoder().decode([WorkoutDay].self, from: workoutsData) else {return}
+            allWorkouts = workouts
+            WorkoutDay.all = workouts
+            print("Workouts: \(WorkoutDay.all)")
+
         }
     }
     
@@ -102,6 +128,9 @@ struct Workouts: View{
 }
 
 struct HomeScreen: View {
+    // Data stored in apps
+    @AppStorage("workouts") private var workoutsData: Data = Data()
+    
     var body: some View {
         TabView{
             Home()

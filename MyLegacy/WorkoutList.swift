@@ -13,6 +13,10 @@ struct WorkoutList: View {
     @Binding var show: Bool
     @Binding var outputWorkout: Int
     @State var new_day = "Untitled"
+    
+    // Data stored in app memory
+    @AppStorage("workouts") private var workoutData: Data = Data()
+    
     var body: some View {
         VStack{
             LazyVGrid(columns: [GridItem(.adaptive(minimum: 160), spacing:15)], spacing: 15){
@@ -49,7 +53,15 @@ struct WorkoutList: View {
             new_day = alert.textFields![0].text!
             
             WorkoutDay.all.append(WorkoutDay(name: new_day))
+            
+            // Store into app memory
+            guard let workouts = try?JSONEncoder().encode(WorkoutDay.all) else{return}
+            
+            workoutData = workouts
+            
             outputWorkout = WorkoutDay.all.count - 1
+            
+            
             withAnimation(.easeIn){
                 show.toggle()
             }
