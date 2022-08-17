@@ -10,8 +10,12 @@ import SwiftUI
 let test_workout = WorkoutDay(name: "Push")
 
 struct WorkoutCard: View {
+    var index: Int
     var workout: WorkoutDay
     
+    // Load Current Index
+    @AppStorage("current") var current = 0
+    @State private var highlight = 0
     var body: some View {
         // Custom colors
         let russianGreen = Color(red: 107/255, green: 143/55, blue:113/255)
@@ -39,7 +43,15 @@ struct WorkoutCard: View {
         .background(LinearGradient(gradient: Gradient(colors: [russianGreen, magicMint]), startPoint: .top, endPoint: .bottom))
         .clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
         .shadow(color: Color.black.opacity(0.3), radius: 15, x:0, y:10)
-        .overlay(RoundedRectangle(cornerRadius: 10).stroke(.red,lineWidth: 4))
+        .overlay(RoundedRectangle(cornerRadius: 10).stroke(.red,lineWidth: CGFloat(highlight)))
+        .onAppear{
+            if current == index{
+                highlight = 4
+            }
+            else{
+                highlight = 0
+            }
+        }
     }
 }
 
@@ -61,7 +73,7 @@ struct AddCard: View{
 
 struct WorkoutCard_Previews: PreviewProvider {
     static var previews: some View {
-        WorkoutCard(workout: test_workout)
+        WorkoutCard(index: 0, workout: test_workout)
         //AddCard()
     }
 }

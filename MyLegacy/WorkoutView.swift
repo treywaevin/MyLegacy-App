@@ -51,7 +51,7 @@ struct WorkoutBottomSheet: View{
     
     // Data stored in app
     @AppStorage("workouts") private var workouts: Data = Data()
-    
+    @AppStorage("current") private var currentIndex: Int = 0
     var body: some View{
         VStack{
             // Swipe Bar
@@ -77,6 +77,11 @@ struct WorkoutBottomSheet: View{
                     withAnimation(.easeOut){
                         show.toggle()
                     }
+                    
+                    // Save data into app storage
+                    guard let workouts = try?JSONEncoder().encode(WorkoutDay.all) else{return}
+                    self.workouts = workouts
+                    
                 } label:{
                     Image(systemName: "xmark")
                         .font(.body.bold())
@@ -102,13 +107,18 @@ struct WorkoutBottomSheet: View{
                 }
                 .frame(maxWidth:.infinity, maxHeight:.infinity, alignment:.topLeading)
                 HStack{
-                    Button{} label: {
+                    Button(action: {
+                        // Set current workoutday as index
+                        let index = WorkoutDay.all.firstIndex(where:{$0.id == workout.id})
+                        
+                        currentIndex = index ?? 0
+                    }, label: {
                         Label("Set Current", systemImage: "calendar.circle")
                             .font(.body.bold())
                             .foregroundColor(.white)
                             .padding(.horizontal, 8)
                             .padding(8)
-                        }
+                        })
                     .background(Color(hex: 0x6B8F71))
                     .cornerRadius(30)
                     Button(action:{
@@ -205,6 +215,7 @@ struct ListRow: View{
                     Button(action: {
                         workout.exercises = workout.exercises.filter{$0.id != exercise.id}
                         count = workout.exercises.count
+                        
                     } ,label: {
                         Label("", systemImage: "trash")
                             .foregroundColor(.white)

@@ -71,20 +71,22 @@ struct SetRow: View{
         HStack{
             Text("Set \(setNum+1)")
             Spacer()
-            TextField("Reps", text: $reps)
+            TextField("\(exercise.reps[setNum]) reps", text: $reps)
                 .keyboardType(.numberPad)
                 .onSubmit{
+                    print("\(setNum), \(exercise.reps.count)")
                     exercise.reps[setNum] = Int(reps) ?? 0
+                    print("\(exercise.reps[setNum])")
                 }
-                .frame(width: 40)
+                .frame(width: 60)
                 .border(.primary)
                 Text("x")
-            TextField("\(measure[measureIndex])", text: $weight)
+            TextField("\(exercise.weight[setNum]) \(measure[measureIndex])", text: $weight)
                 .keyboardType(.numberPad)
                 .onSubmit {
                     exercise.weight[setNum] = Int(weight) ?? 0
                 }
-                .frame(width: 35)
+                .frame(width: 60)
                 .border(.primary)
             
         }

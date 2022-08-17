@@ -8,6 +8,10 @@
 import SwiftUI
 
 struct Home: View{
+    /* TO DO
+     Goals:
+        - Be able to make any workout current workout and be able to cycle by the next day
+        - Make sure data is saved when logging workouts*/
     @AppStorage("name") var name = "User"
     @AppStorage("current") var current = 0
     @State var dateString = ""
@@ -16,6 +20,7 @@ struct Home: View{
     
     //Loaad Data
     @AppStorage("workouts") private var workoutsData: Data = Data()
+    @State var allWorkouts: [WorkoutDay] = WorkoutDay.all
     
     var body: some View{
         NavigationView{
@@ -40,7 +45,7 @@ struct Home: View{
                         Color.white
                         VStack{
                             List{
-                                ForEach(WorkoutDay.all[current].exercises){ exercise in
+                                ForEach(allWorkouts[current].exercises){ exercise in
                                     LogRow(exercise: exercise)
                                         .onTapGesture{
                                             showExercise = exercise
@@ -53,9 +58,11 @@ struct Home: View{
                             .listStyle(.plain)
                             //.frame(height:330)
                             
-                            Button{}label:{
+                            Button(action:{
+                                logWorkout()
+                            },label:{
                                 Text("Log Workout")
-                            }
+                            })
                         }
                     }
                 }
@@ -69,14 +76,49 @@ struct Home: View{
         }
         .onAppear{
             dateString = Date.now.formatted(.dateTime.weekday(.wide).month(.wide).day())
+            
+            // Load App memory idata
+            guard let workouts = try?JSONDecoder().decode([WorkoutDay].self, from: workoutsData) else {return}
+            allWorkouts = workouts
+            WorkoutDay.all = workouts
         }
+    }
+    
+    // Saves workout, checking if any personal records were made
+    func logWorkout(){
+        // Loop through exercises
+        for exercise in allWorkouts[current].exercises{
+            // Go through each exerises weight
+            for i in 0..<exercise.weight.count{
+                // If heavy weight was found
+                
+                if(exercise.weight[i] > exercise.pr){
+                    exercise.pr = exercise.weight[i]
+                    exercise.pr_reps = exercise.reps[i]
+                }
+                // If WEight is the same as pr weight
+                else if(exercise.weight[i] == exercise.pr){
+                    
+                    // If more reps are done, log it as pr reps
+                    
+                    if exercise.reps[i] > exercise.pr_reps{
+                        exercise.pr_reps = exercise.reps[i]
+                    }
+                }
+            }
+        }
+        
+        // Once done looping through all exercises, save data to app storage
+        
+        guard let workouts = try?JSONEncoder().encode(WorkoutDay.all) else{return}
+        workoutsData = workouts
     }
 }
 
 struct Workouts: View{
     @State var show = false
     @State var workoutIndex: Int = 0
-    @State var allWorkouts: [WorkoutDay] = []
+    @State var allWorkouts: [WorkoutDay] = WorkoutDay.all
     
     // Data stored in apps
     @AppStorage("workouts") private var workoutsData: Data = Data()
@@ -130,7 +172,6 @@ struct Workouts: View{
 struct HomeScreen: View {
     // Data stored in apps
     @AppStorage("workouts") private var workoutsData: Data = Data()
-    
     var body: some View {
         TabView{
             Home()

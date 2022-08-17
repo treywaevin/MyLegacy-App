@@ -13,15 +13,17 @@ struct WorkoutList: View {
     @Binding var show: Bool
     @Binding var outputWorkout: Int
     @State var new_day = "Untitled"
-    
+    @State var refresh: Bool = false
     // Data stored in app memory
     @AppStorage("workouts") private var workoutData: Data = Data()
-    
     var body: some View {
+        
+        /* BUGS:
+         Red border doesn't update unless view is changed*/
         VStack{
             LazyVGrid(columns: [GridItem(.adaptive(minimum: 160), spacing:15)], spacing: 15){
                 ForEach(Array(workouts.enumerated()), id:\.offset) { index, workout in
-                    WorkoutCard(workout: workout)
+                    WorkoutCard(index: index, workout: workout)
                         .onTapGesture{
                             print("\(workout.name), \(index)")
                             outputWorkout = index

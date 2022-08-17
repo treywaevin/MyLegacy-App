@@ -20,8 +20,8 @@ class Exercise: Codable & Identifiable{
     
     var pr: Int = 0
     var pr_reps: Int = 0
-    var reps: [Int] = []
-    var weight: [Int] = []
+    var reps = [0,0,0,0,0,0,0,0,0,0]
+    var weight = [0,0,0,0,0,0,0,0,0,0]
 }
 
 class WorkoutDay: Codable & Identifiable{
